@@ -1,0 +1,26 @@
+@import 'src/styles/variables.module.scss';
+
+.text::after {
+  content: '';
+  border-bottom: $color-palette-main 2px solid;
+  display: block;
+  width: 0;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.text:hover::after {
+  width: 100%;
+  transition: all 0.3s ease-in-out;
+}
+
+.active {
+  color: $color-palette-main !important;
+}
+
+.icon {
+  color: $color-palette-foreground-dark;
+  display: inline-block;
+  font-size: 1.5rem;
+}
