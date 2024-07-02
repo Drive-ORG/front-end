@@ -2,10 +2,12 @@ import { Button, Grid, Hidden, Typography } from '@mui/material';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
+import { websiteUrls } from '@/constants/urls';
+
 export const Header = () => {
   const pathname = usePathname();
 
-  if (pathname === '/sign-in') {
+  if (['/sign-in', '/register'].includes(pathname)) {
     return null;
   }
   return (
@@ -18,8 +20,17 @@ export const Header = () => {
         <Grid item>
           <Grid container spacing={2}>
             <Grid item>
+              <Button variant='outlined'>
+                <Link href={websiteUrls.register}>
+                  <Typography color='white' variant='button'>
+                    Register
+                  </Typography>
+                </Link>
+              </Button>
+            </Grid>
+            <Grid item>
               <Button variant='contained'>
-                <Link href='/sign-in'>
+                <Link href={websiteUrls.login}>
                   <Typography color='white' variant='button'>
                     Sign in
                   </Typography>

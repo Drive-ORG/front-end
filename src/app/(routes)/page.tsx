@@ -1,6 +1,9 @@
 'use client';
 
 import { Button, Card, CardContent, Grid, Typography } from '@mui/material';
+import Link from 'next/link';
+
+import { websiteUrls } from '@/constants/urls';
 
 import classes from './index.module.scss';
 
@@ -17,7 +20,16 @@ const HomePage = () => {
           </Grid>
           <Grid item>
             <Button variant='outlined' color='primary'>
-              <Typography variant='button'>login</Typography>
+              <Link href={websiteUrls.register}>
+                <Typography variant='button'>Register</Typography>
+              </Link>
+            </Button>
+          </Grid>
+          <Grid item>
+            <Button variant='contained' color='primary'>
+              <Link href={websiteUrls.login}>
+                <Typography variant='button'>login</Typography>
+              </Link>
             </Button>
           </Grid>
         </Grid>
