@@ -1,13 +1,13 @@
-# Resume
+# Drive
 
-This is my resume. I also made it public so you can watch my handwrite.
+This is Drive. You can upload & download your files here.
 
 ## Getting Started
 
 First, install pnpm using npm
 
 ```bash
-npm i -g pnpm@8.6.12
+npm i -g pnpm@9.0.4
 ```
 
 then install all of the dependencies of the project with
