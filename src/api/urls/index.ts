@@ -1,10 +1,10 @@
 export const apiUrls = {
   login: {
     method: 'POST',
-    url: '/api/login'
+    url: 'api/login'
   },
   register: {
     method: 'POST',
-    url: '/api/register'
+    url: 'api/register'
   }
 } as const;
