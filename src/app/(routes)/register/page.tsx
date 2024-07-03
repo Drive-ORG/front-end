@@ -63,7 +63,7 @@ const Register = () => {
                 fullWidth
                 onChange={handleChange}
                 type='password'
-                name='password'
+                name='password2'
               />
             </Grid>
             <Grid item xs={2}>
