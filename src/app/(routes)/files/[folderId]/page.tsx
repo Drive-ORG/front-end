@@ -2,6 +2,7 @@
 
 import { CreateNewFolder, FileUpload } from '@mui/icons-material';
 import { Button, Divider, Grid, Typography } from '@mui/material';
+import { useParams } from 'next/navigation';
 import { ChangeEvent } from 'react';
 
 import { Folder } from '@/components/Folder';
@@ -9,6 +10,8 @@ import { Folder } from '@/components/Folder';
 import classes from './index.module.scss';
 
 const Files = () => {
+  const params = useParams();
+
   const handleAddFolder = () => {};
 
   const handleAddFile = (event: ChangeEvent<HTMLInputElement>) => {
