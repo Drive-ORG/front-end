@@ -16,7 +16,17 @@ export const Layout = ({ children }: { children: ReactNode }) => {
 
   return (
     <ThemeProvider theme={responsiveFontSizes(applicationTheme(prefersDarkMode))}>
-      <ToastContainer />
+      <ToastContainer
+        position='top-center'
+        autoClose={4000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <Header />
       <div className={classes.container}>{children}</div>
     </ThemeProvider>

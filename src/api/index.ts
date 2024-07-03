@@ -18,9 +18,7 @@ export const api = async (options?: AxiosRequestConfig, authenticate = true) => 
     });
     return response;
   } catch (error: any) {
-    error.response.data.non_field_errors.map((nonFieldError: string) => {
-      toast.error(nonFieldError);
-    });
+    toast.error('مشکلی پیش آمده');
     return Promise.reject(error);
   }
 };
