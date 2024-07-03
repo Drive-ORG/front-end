@@ -1,8 +1,14 @@
+import { AxiosResponse } from 'axios';
+
 import { api } from '..';
 import { apiUrls } from '../urls';
-import { LoginApiData, RegisterApiData } from './models';
+import { LoginApiData, LoginApiResponse, RegisterApiData } from './models';
 
-export const loginApi = ({ data }: { data: LoginApiData }) => {
+export const loginApi = ({
+  data
+}: {
+  data: LoginApiData;
+}): Promise<AxiosResponse<LoginApiResponse>> => {
   const { method, url } = apiUrls.login;
   return api({ data, method, url }, false);
 };

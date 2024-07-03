@@ -1,41 +1,58 @@
 'use client';
 
 import { Button, Card, CardContent, Grid, TextField, Typography } from '@mui/material';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 
 import { loginApi } from '@/api/methods';
+import { LoginApiData } from '@/api/methods/models';
 
 import classes from './index.module.scss';
 
 const SignIn = () => {
-  const [loginData, setLoginData] = useState({});
+  const [loginData, setLoginData] = useState<LoginApiData>({
+    password: '',
+    username: ''
+  });
 
-  const handleLogin = () => {
-    loginApi();
+  const handleLogin = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    loginApi({ data: loginData }).then((response) => {
+      localStorage.setItem('token', response.data.token);
+      localStorage.setItem('userData', JSON.stringify(response.data.user));
+    });
   };
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setLoginData((prevState) => ({ ...prevState, [name]: value }));
   };
+
   return (
     <Card className={classes.root}>
       <CardContent>
-        <Grid container justifyContent='center' spacing={4}>
-          <Grid item xs={12}>
-            <TextField label='email' fullWidth type='email' onChange={handleChange} />
+        <form onSubmit={handleLogin}>
+          <Grid container justifyContent='center' spacing={4}>
+            <Grid item xs={12}>
+              <TextField label='username' fullWidth name='username' onChange={handleChange} />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                label='password'
+                fullWidth
+                name='password'
+                type='password'
+                onChange={handleChange}
+              />
+            </Grid>
+            <Grid item xs={2}>
+              <Button fullWidth variant='contained' type='submit'>
+                <Typography color='white' variant='button'>
+                  Sign in
+                </Typography>
+              </Button>
+            </Grid>
           </Grid>
-          <Grid item xs={12}>
-            <TextField label='password' fullWidth type='password' onChange={handleChange} />
-          </Grid>
-          <Grid item xs={2}>
-            <Button fullWidth variant='contained' onClick={handleLogin}>
-              <Typography color='white' variant='button'>
-                Sign in
-              </Typography>
-            </Button>
-          </Grid>
-        </Grid>
+        </form>
       </CardContent>
     </Card>
   );

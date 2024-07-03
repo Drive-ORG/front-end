@@ -1,4 +1,5 @@
 import axios, { AxiosRequestConfig } from 'axios';
+import { toast } from 'react-toastify';
 
 const axiosInstance = axios.create();
 
@@ -16,5 +17,10 @@ export const api = async (options?: AxiosRequestConfig, authenticate = true) => 
       url: `${process.env.NEXT_PUBLIC_BASE_URL}/${options?.url}/`
     });
     return response;
-  } catch (error) {}
+  } catch (error: any) {
+    error.response.data.non_field_errors.map((nonFieldError: string) => {
+      toast.error(nonFieldError);
+    });
+    return Promise.reject(error);
+  }
 };
