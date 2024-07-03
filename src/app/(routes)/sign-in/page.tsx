@@ -1,14 +1,17 @@
 'use client';
 
 import { Button, Card, CardContent, Grid, TextField, Typography } from '@mui/material';
+import { useRouter } from 'next/navigation';
 import { ChangeEvent, FormEvent, useState } from 'react';
 
 import { loginApi } from '@/api/methods';
 import { LoginApiData } from '@/api/methods/models';
+import { websiteUrls } from '@/constants/urls';
 
 import classes from './index.module.scss';
 
 const SignIn = () => {
+  const router = useRouter();
   const [loginData, setLoginData] = useState<LoginApiData>({
     password: '',
     username: ''
@@ -19,6 +22,7 @@ const SignIn = () => {
     loginApi({ data: loginData }).then((response) => {
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('userData', JSON.stringify(response.data.user));
+      router.push(websiteUrls.filesRoot);
     });
   };
 

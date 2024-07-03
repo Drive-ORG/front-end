@@ -18,7 +18,7 @@ export const api = async (options?: AxiosRequestConfig, authenticate = true) => 
     });
     return response;
   } catch (error: any) {
-    toast.error('مشکلی پیش آمده');
+    toast.error('a problem');
     return Promise.reject(error);
   }
 };

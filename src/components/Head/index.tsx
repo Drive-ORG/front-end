@@ -22,7 +22,6 @@ export const Layout = ({ children }: { children: ReactNode }) => {
         hideProgressBar={false}
         newestOnTop
         closeOnClick
-        rtl
         pauseOnFocusLoss
         draggable
         pauseOnHover
