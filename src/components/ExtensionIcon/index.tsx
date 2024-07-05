@@ -12,11 +12,11 @@ export const ExtensionIcon = ({ type, ...iconProps }: ExtensionIconProps) => {
     case 'mp4':
       return <Slideshow {...iconProps} />;
     case 'txt':
-      return <Abc />;
+      return <Abc {...iconProps} />;
     case 'word':
-      return <Microsoft />;
+      return <Microsoft {...iconProps} />;
     case 'pdf':
-      return <PictureAsPdf />;
+      return <PictureAsPdf {...iconProps} />;
     default:
       return <></>;
   }

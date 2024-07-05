@@ -3,14 +3,18 @@ import { LoadingButton } from '@mui/lab';
 import { IconButton, Typography } from '@mui/material';
 import Link from 'next/link';
 import { useState } from 'react';
+import { toast } from 'react-toastify';
 
 import { deleteFileApi } from '@/api/methods';
 import { ExtensionIcon } from '@/components/ExtensionIcon';
+import { useUserData } from '@/hooks/useUserData';
 
 import { FilePreviewModal } from '../FilePreviewModal';
 import { FileProps } from './models';
 
 export const File = ({ fileInfo }: FileProps) => {
+  const { getUserData } = useUserData();
+
   const [isLoading, setIsLoading] = useState(false);
   const [isOpenFilePreviewModal, setIsOpenFilePreviewModal] = useState(false);
 
@@ -32,7 +36,8 @@ export const File = ({ fileInfo }: FileProps) => {
     event.stopPropagation();
     deleteFileApi({ fileId: fileInfo.id })
       .then(() => {
-        location.reload();
+        toast.success('file deleted');
+        getUserData();
       })
       .catch(() => {
         setIsLoading(false);

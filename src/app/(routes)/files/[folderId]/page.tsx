@@ -7,31 +7,31 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 import { getFoldersApi, uploadFileApi } from '@/api/methods';
-import { GetFoldersApiResponse, User } from '@/api/methods/models';
+import { GetFoldersApiResponse } from '@/api/methods/models';
 import { File } from '@/components/File';
 import { Folder } from '@/components/Folder';
 import { FolderNameModal } from '@/components/FolderNameModal';
 import FullPageLoading from '@/components/FullPageLoading';
 import { websiteUrls } from '@/constants/urls';
+import { useUserData } from '@/hooks/useUserData';
+import { useAppSelector } from '@/store';
 
 import classes from './index.module.scss';
 
 const Files = () => {
+  const userData = useAppSelector((state) => state.userData);
+  const { getUserData } = useUserData();
+
   const params = useParams();
   const router = useRouter();
   const [isOpenFolderNameModal, setIsOpenFolderNameModal] = useState(false);
   const [folderInfo, setFolderInfo] = useState<GetFoldersApiResponse>();
   const [isLoading, setIsLoading] = useState(true);
-  const [userData, setUserData] = useState<User>();
 
   useEffect(() => {
     setIsLoading(true);
     const numberFolderId = Number(params.folderId);
-    const userData = localStorage.getItem('userData');
-    if (userData) {
-      const parsedUserData: User = JSON.parse(userData || '');
-      setUserData(parsedUserData);
-
+    if (userData.data.id) {
       if (numberFolderId) {
         getFoldersApi({ folderId: Number(params.folderId) })
           .then((response) => {
@@ -42,13 +42,13 @@ const Files = () => {
             setIsLoading(false);
           });
       } else {
-        router.replace(`${websiteUrls.files}/${parsedUserData.folder_id}`);
+        router.replace(`${websiteUrls.files}/${userData.data.folder_id}`);
       }
-    } else {
+    } else if (!userData.isLoading) {
       toast.error('please login first');
       router.replace(websiteUrls.login);
     }
-  }, []);
+  }, [userData.data]);
 
   const handleCloseFolderNameModal = () => {
     setIsOpenFolderNameModal(false);
@@ -68,13 +68,14 @@ const Files = () => {
       setIsLoading(true);
       uploadFileApi({ data: { file }, folderId: Number(params.folderId) })
         .then(() => {
-          location.reload();
+          toast.success('file uploaded');
+          getUserData();
         })
         .catch(() => undefined);
     }
   };
 
-  if (isLoading || !userData) {
+  if (isLoading || !userData.data.id) {
     return <FullPageLoading />;
   }
 
@@ -83,11 +84,11 @@ const Files = () => {
       <Grid container spacing={4} justifyContent='space-between'>
         <Grid item xs={12}>
           <Typography>
-            Used storage: {userData.used_storage_gb} GB / {userData.total_storage_gb} GB
+            Used storage: {userData.data.used_storage_gb} GB / {userData.data.total_storage_gb} GB
           </Typography>
           <LinearProgress
             variant='determinate'
-            value={userData.used_storage_gb / userData.total_storage_gb}
+            value={userData.data.used_storage_gb / userData.data.total_storage_gb}
           />
         </Grid>
         <Grid item>

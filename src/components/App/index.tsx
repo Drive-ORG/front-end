@@ -1,11 +1,19 @@
+'use client';
+
+import { useEffect } from 'react';
+
 import { getUserInfoApi } from '@/api/methods';
 import { useAppDispatch } from '@/store';
 import { setLoading, setUserData } from '@/store/slices/userDataSlice';
 
-export const useUserData = () => {
+import { Header } from '../Header';
+import classes from './index.module.scss';
+import { AppProps } from './models';
+
+export const App = ({ children }: AppProps) => {
   const dispatch = useAppDispatch();
 
-  const getUserData = () => {
+  useEffect(() => {
     getUserInfoApi()
       .then((response) => {
         dispatch(setUserData(response.data));
@@ -14,7 +22,12 @@ export const useUserData = () => {
       .finally(() => {
         dispatch(setLoading(false));
       });
-  };
+  }, []);
 
-  return { getUserData };
+  return (
+    <>
+      <Header />
+      <div className={classes.container}>{children}</div>
+    </>
+  );
 };
