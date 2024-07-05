@@ -6,14 +6,19 @@ export const useUserData = () => {
   const dispatch = useAppDispatch();
 
   const getUserData = () => {
-    getUserInfoApi()
-      .then((response) => {
-        dispatch(setUserData(response.data));
-      })
-      .catch(() => undefined)
-      .finally(() => {
-        dispatch(setLoading(false));
-      });
+    dispatch(setLoading(true));
+    if (localStorage.getItem('token')) {
+      getUserInfoApi()
+        .then((response) => {
+          dispatch(setUserData(response.data));
+        })
+        .catch(() => undefined)
+        .finally(() => {
+          dispatch(setLoading(false));
+        });
+    } else {
+      dispatch(setLoading(false));
+    }
   };
 
   return { getUserData };

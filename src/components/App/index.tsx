@@ -2,26 +2,17 @@
 
 import { useEffect } from 'react';
 
-import { getUserInfoApi } from '@/api/methods';
-import { useAppDispatch } from '@/store';
-import { setLoading, setUserData } from '@/store/slices/userDataSlice';
+import { useUserData } from '@/hooks/useUserData';
 
 import { Header } from '../Header';
 import classes from './index.module.scss';
 import { AppProps } from './models';
 
 export const App = ({ children }: AppProps) => {
-  const dispatch = useAppDispatch();
+  const { getUserData } = useUserData();
 
   useEffect(() => {
-    getUserInfoApi()
-      .then((response) => {
-        dispatch(setUserData(response.data));
-      })
-      .catch(() => undefined)
-      .finally(() => {
-        dispatch(setLoading(false));
-      });
+    getUserData();
   }, []);
 
   return (
