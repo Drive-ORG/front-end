@@ -7,9 +7,11 @@ import { Modal } from '../Modal';
 import { FilePreviewModalProps } from './models';
 
 export const FilePreviewModal = ({ isOpen, onClose, fileInfo }: FilePreviewModalProps) => {
+  const downloadFileId = `download-file-${fileInfo.id}`;
+
   const handleDownloadFile = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const downloadFileLink = document.getElementById('download-file');
+    const downloadFileLink = document.getElementById(downloadFileId);
     downloadFileLink?.click();
   };
 
@@ -25,10 +27,10 @@ export const FilePreviewModal = ({ isOpen, onClose, fileInfo }: FilePreviewModal
       onClose={onClose}
       open={isOpen}
     >
-      <Link href={fileInfo.file} target='_blank' download id='download-file' />
+      <Link href={fileInfo.file} target='_blank' download id={downloadFileId} />
       {['jpg', 'png'].includes(fileInfo.type) ? (
         <img src={fileInfo.file} alt={fileInfo.name} />
-      ) : fileInfo.type ? (
+      ) : fileInfo.type === 'pdf' ? (
         <embed src={fileInfo.file} title={fileInfo.name} />
       ) : (
         <></>

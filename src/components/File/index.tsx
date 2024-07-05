@@ -18,6 +18,8 @@ export const File = ({ fileInfo }: FileProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isOpenFilePreviewModal, setIsOpenFilePreviewModal] = useState(false);
 
+  const downloadFileId = `download-file-${fileInfo.id}`;
+
   const handleOpenFilePreviewModal = () => {
     setIsOpenFilePreviewModal(true);
   };
@@ -27,7 +29,7 @@ export const File = ({ fileInfo }: FileProps) => {
   };
 
   const handleDownloadFile = () => {
-    const downloadFileLink = document.getElementById('download-file');
+    const downloadFileLink = document.getElementById(downloadFileId);
     downloadFileLink?.click();
   };
 
@@ -54,7 +56,7 @@ export const File = ({ fileInfo }: FileProps) => {
 
   return (
     <>
-      <Link href={fileInfo.file} target='_blank' download id='download-file' />
+      <Link href={fileInfo.file} target='_blank' download id={downloadFileId} />
       <LoadingButton
         loading={isLoading}
         variant='contained'
