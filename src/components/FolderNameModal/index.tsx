@@ -22,14 +22,9 @@ export const FolderNameModal = ({ isOpen, onClose, onSubmit }: FolderNameModalPr
     event.preventDefault();
 
     const bodyParam: CreateFolderApiData = {
-      name: folderName
+      name: folderName,
+      parent_folder: Number(params.folderId)
     };
-
-    const folderIdToNumber = Number(params.folderId);
-
-    if (folderIdToNumber) {
-      bodyParam.parent_folder = folderIdToNumber;
-    }
 
     createFolderApi({ data: bodyParam }).then(() => {
       toast.success('file created');

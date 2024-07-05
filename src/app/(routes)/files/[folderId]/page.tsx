@@ -6,6 +6,7 @@ import { useParams } from 'next/navigation';
 import { ChangeEvent, useEffect, useState } from 'react';
 
 import { getFoldersApi } from '@/api/methods';
+import { File } from '@/components/File';
 import { Folder } from '@/components/Folder';
 import { FolderNameModal } from '@/components/FolderNameModal';
 import FullPageLoading from '@/components/FullPageLoading';
@@ -85,6 +86,15 @@ const Files = () => {
         {folders.map((folder) => (
           <Grid key={folder} item xl={2}>
             <Folder name='' id={0} />
+          </Grid>
+        ))}
+      </Grid>
+      <Divider className={classes.divider} />
+      <Typography variant='h5'>Files</Typography>
+      <Grid container spacing={4} className={classes.folders_container}>
+        {files.map((file) => (
+          <Grid key={file} item xl={2}>
+            <File name='' id={0} />
           </Grid>
         ))}
       </Grid>
