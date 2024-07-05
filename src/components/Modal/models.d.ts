@@ -7,6 +7,6 @@ export interface ModalProps extends DialogProps {
   children: ReactNode;
   onClose: () => void;
   submitButtonProps?: ButtonProps;
-  submitButtonText: ReactNode;
+  submitButtonText: string;
   isLoading?: boolean;
 }

@@ -32,27 +32,27 @@ export const Header = () => {
         <Grid container spacing={2}>
           {userData.data.id ? (
             <Grid item>
-              <Typography>{userData.data.username}</Typography>
+              <Typography variant='h6'>{userData.data.username}</Typography>
             </Grid>
           ) : (
             <>
               <Grid item>
-                <Button variant='outlined'>
-                  <Link href={websiteUrls.register}>
+                <Link href={websiteUrls.register}>
+                  <Button variant='outlined'>
                     <Typography color='white' variant='button'>
                       Register
                     </Typography>
-                  </Link>
-                </Button>
+                  </Button>
+                </Link>
               </Grid>
               <Grid item>
-                <Button variant='contained'>
-                  <Link href={websiteUrls.login}>
+                <Link href={websiteUrls.login}>
+                  <Button variant='contained'>
                     <Typography color='white' variant='button'>
                       Sign in
                     </Typography>
-                  </Link>
-                </Button>
+                  </Button>
+                </Link>
               </Grid>
             </>
           )}

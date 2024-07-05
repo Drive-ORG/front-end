@@ -18,7 +18,7 @@ export const Modal = ({
   return (
     <MuiDialog onClose={onClose} {...props}>
       <div className={classes.app_bar}>
-        <Typography>{title}</Typography>
+        <Typography variant='h6'>{title}</Typography>
         <IconButton id='dialog-close-icon' onClick={onClose} size='small'>
           <Close />
         </IconButton>

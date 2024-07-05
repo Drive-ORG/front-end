@@ -83,7 +83,7 @@ const Files = () => {
     <>
       <Grid container spacing={4} justifyContent='space-between'>
         <Grid item xs={12}>
-          <Typography>
+          <Typography variant='body1'>
             Used storage: {userData.data.used_storage_gb} GB / {userData.data.total_storage_gb} GB
           </Typography>
           <LinearProgress

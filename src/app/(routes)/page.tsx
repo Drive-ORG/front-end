@@ -36,18 +36,18 @@ const HomePage = () => {
             <Typography variant='h6'>To use Drive you must log in as user or admin</Typography>
           </Grid>
           <Grid item>
-            <Button variant='outlined' color='primary'>
-              <Link href={websiteUrls.register}>
+            <Link href={websiteUrls.register}>
+              <Button variant='outlined' color='primary'>
                 <Typography variant='button'>Register</Typography>
-              </Link>
-            </Button>
+              </Button>
+            </Link>
           </Grid>
           <Grid item>
-            <Button variant='contained' color='primary'>
-              <Link href={websiteUrls.login}>
+            <Link href={websiteUrls.login}>
+              <Button variant='contained' color='primary'>
                 <Typography variant='button'>login</Typography>
-              </Link>
-            </Button>
+              </Button>
+            </Link>
           </Grid>
         </Grid>
       </CardContent>
