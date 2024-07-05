@@ -120,7 +120,6 @@
     "require-yield": "error",
     "simple-import-sort/exports": "error",
     "simple-import-sort/imports": "error",
-    "sort-keys": "error",
     "use-isnan": "error",
     "valid-typeof": "error"
   }
