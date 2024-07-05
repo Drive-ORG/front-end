@@ -2,7 +2,7 @@
 FROM node:18.17.1
 
 ## Install dependencies in the root of the Container
-RUN npm i -g pnpm@8.7.4
+RUN npm i -g pnpm@9.0.4
 COPY package.json pnpm-lock.yaml ./
 ENV NODE_PATH=/node_modules
 ENV PATH=$PATH:/node_modules/.bin
