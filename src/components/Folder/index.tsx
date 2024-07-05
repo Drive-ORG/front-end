@@ -42,6 +42,7 @@ export const Folder = ({ folderInfo }: FolderProps) => {
       variant='contained'
       color='secondary'
       startIcon={<FolderTwoTone color='primary' />}
+      data-testid={`cypress-folder-button-${folderInfo.id}`}
       onDoubleClick={handleOpenFolder}
       endIcon={
         <IconButton color='primary' onClick={handleDeleteFolder}>

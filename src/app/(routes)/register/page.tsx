@@ -3,16 +3,19 @@
 import { LoadingButton } from '@mui/lab';
 import { Card, CardContent, Grid, TextField, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 import { registerApi } from '@/api/methods';
 import { RegisterApiData } from '@/api/methods/models';
 import { websiteUrls } from '@/constants/urls';
+import { useAppSelector } from '@/store';
 
 import classes from './index.module.scss';
 
 const Register = () => {
+  const userData = useAppSelector((state) => state.userData);
+
   const router = useRouter();
   const [registerData, setRegisterData] = useState<RegisterApiData>({
     email: '',
@@ -21,6 +24,12 @@ const Register = () => {
     username: ''
   });
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (userData.data.id) {
+      router.replace(`${websiteUrls.files}/${userData.data.folder_id}`);
+    }
+  }, [userData.data.id]);
 
   const handleRegister = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();

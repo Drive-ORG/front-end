@@ -61,10 +61,17 @@ const SignIn = () => {
         <form onSubmit={handleLogin}>
           <Grid container justifyContent='center' spacing={4}>
             <Grid item xs={12}>
-              <TextField label='username' fullWidth name='username' onChange={handleChange} />
+              <TextField
+                data-testid='cypress-sign-in-username-field'
+                label='username'
+                fullWidth
+                name='username'
+                onChange={handleChange}
+              />
             </Grid>
             <Grid item xs={12}>
               <TextField
+                data-testid='cypress-sign-in-password-field'
                 label='password'
                 fullWidth
                 name='password'
@@ -73,7 +80,12 @@ const SignIn = () => {
               />
             </Grid>
             <Grid item>
-              <LoadingButton loading={isLoading} variant='contained' type='submit'>
+              <LoadingButton
+                data-testid='cypress-sign-in-button'
+                loading={isLoading}
+                variant='contained'
+                type='submit'
+              >
                 <Typography color='white' variant='button'>
                   Sign in
                 </Typography>
