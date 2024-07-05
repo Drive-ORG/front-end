@@ -6,18 +6,12 @@ import { usePathname } from 'next/navigation';
 import { websiteUrls } from '@/constants/urls';
 import { useAppSelector } from '@/store';
 
-import FullPageLoading from '../FullPageLoading';
-
 export const Header = () => {
   const pathname = usePathname();
   const userData = useAppSelector((state) => state.userData);
 
-  if (userData.isLoading) {
-    return <FullPageLoading />;
-  }
-
-  if (['/sign-in', '/register'].includes(pathname)) {
-    return null;
+  if (['/sign-in', '/register'].includes(pathname) || userData.isLoading) {
+    return <></>;
   }
 
   return (
@@ -28,14 +22,14 @@ export const Header = () => {
         </Link>
       </Grid>
       <Grid item xl={5} lg={5} md={5} sm={2}></Grid>
-      <Grid item sx={{ display: { md: 'block', xs: 'none' } }}>
-        <Grid container spacing={2}>
-          {userData.data.id ? (
-            <Grid item>
-              <Typography variant='h6'>{userData.data.username}</Typography>
-            </Grid>
-          ) : (
-            <>
+      {userData.data.id ? (
+        <Grid item>
+          <Typography variant='h6'>{userData.data.username}</Typography>
+        </Grid>
+      ) : (
+        <>
+          <Grid item sx={{ display: { md: 'block', xs: 'none' } }}>
+            <Grid container spacing={2}>
               <Grid item>
                 <Link href={websiteUrls.register}>
                   <Button variant='outlined'>
@@ -54,10 +48,10 @@ export const Header = () => {
                   </Button>
                 </Link>
               </Grid>
-            </>
-          )}
-        </Grid>
-      </Grid>
+            </Grid>
+          </Grid>
+        </>
+      )}
     </Grid>
   );
 };

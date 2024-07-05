@@ -1,6 +1,7 @@
 'use client';
 
-import { Button, Card, CardContent, Grid, TextField, Typography } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
+import { Card, CardContent, Grid, TextField, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { toast } from 'react-toastify';
@@ -19,15 +20,20 @@ const Register = () => {
     password2: '',
     username: ''
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleRegister = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setIsLoading(true);
     registerApi({ data: registerData })
       .then(() => {
         toast.success('registered successfully');
         router.push(websiteUrls.login);
       })
-      .catch(() => undefined);
+      .catch(() => undefined)
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -70,12 +76,12 @@ const Register = () => {
                 name='password2'
               />
             </Grid>
-            <Grid item xs={2}>
-              <Button fullWidth variant='contained' type='submit'>
+            <Grid item>
+              <LoadingButton loading={isLoading} variant='contained' type='submit'>
                 <Typography color='white' variant='button'>
                   Register
                 </Typography>
-              </Button>
+              </LoadingButton>
             </Grid>
           </Grid>
         </form>

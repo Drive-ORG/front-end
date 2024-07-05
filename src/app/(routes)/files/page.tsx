@@ -12,12 +12,14 @@ const Files = () => {
   const userData = useAppSelector((state) => state.userData);
 
   useEffect(() => {
-    if (userData.data.id) {
-      router.replace(`${websiteUrls.files}/${userData.data.folder_id}`);
-    } else {
-      router.replace(websiteUrls.login);
+    if (!userData.isLoading) {
+      if (userData.data.id) {
+        router.replace(`${websiteUrls.files}/${userData.data.folder_id}`);
+      } else {
+        router.replace(websiteUrls.login);
+      }
     }
-  }, [userData.data]);
+  }, [userData]);
 
   return <FullPageLoading />;
 };

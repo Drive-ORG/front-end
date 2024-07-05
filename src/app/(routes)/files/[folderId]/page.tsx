@@ -48,7 +48,7 @@ const Files = () => {
       toast.error('please login first');
       router.replace(websiteUrls.login);
     }
-  }, [userData.data]);
+  }, [userData]);
 
   const handleCloseFolderNameModal = () => {
     setIsOpenFolderNameModal(false);
@@ -75,7 +75,7 @@ const Files = () => {
     }
   };
 
-  if (isLoading || !userData.data.id) {
+  if (isLoading || userData.isLoading) {
     return <FullPageLoading />;
   }
 
