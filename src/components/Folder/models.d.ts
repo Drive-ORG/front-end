@@ -1,4 +1,6 @@
+import { FolderType } from '@/api/methods/models';
+
 export interface FolderProps {
-  name: string;
-  id: number;
+  folderInfo: FolderType;
+  onRemove?: () => void;
 }

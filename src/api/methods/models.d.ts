@@ -14,6 +14,7 @@ export interface User {
   email: string;
   total_storage_gb: number;
   used_storage_gb: number;
+  folder_id: number;
 }
 
 export interface RegisterApiData {
@@ -33,8 +34,27 @@ export interface CreateFolderApiResponse {
   name: string;
   owner: number;
   parent_folder: number;
-  subFolders: string[];
-  files: string[];
+  subfolders: FolderType[];
+  files: FileType[];
 }
 
 export type GetFoldersApiResponse = CreateFolderApiResponse;
+
+export interface FolderType {
+  id: number;
+  name: string;
+}
+
+export type FileExtension = 'png' | 'jpg' | 'mp4' | 'mkv' | 'txt' | 'word' | 'pdf';
+
+export interface FileType {
+  id: number;
+  name: string;
+  type: FileExtension;
+  file: string;
+  size: number;
+}
+
+export interface UploadFileApiData {
+  file: File;
+}

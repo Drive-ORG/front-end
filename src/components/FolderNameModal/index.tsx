@@ -1,5 +1,4 @@
-import { Close } from '@mui/icons-material';
-import { Button, Dialog, IconButton, TextField, Typography } from '@mui/material';
+import { TextField } from '@mui/material';
 import { useParams } from 'next/navigation';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { toast } from 'react-toastify';
@@ -7,11 +6,12 @@ import { toast } from 'react-toastify';
 import { createFolderApi } from '@/api/methods';
 import { CreateFolderApiData } from '@/api/methods/models';
 
-import classes from './index.module.scss';
+import { Modal } from '../Modal';
 import { FolderNameModalProps } from './models';
 
 export const FolderNameModal = ({ isOpen, onClose, onSubmit }: FolderNameModalProps) => {
   const [folderName, setFolderName] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const params = useParams();
 
   const handleChangeFolderName = (event: ChangeEvent<HTMLInputElement>) => {
@@ -19,6 +19,7 @@ export const FolderNameModal = ({ isOpen, onClose, onSubmit }: FolderNameModalPr
   };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    setIsLoading(true);
     event.preventDefault();
 
     const bodyParam: CreateFolderApiData = {
@@ -26,37 +27,33 @@ export const FolderNameModal = ({ isOpen, onClose, onSubmit }: FolderNameModalPr
       parent_folder: Number(params.folderId)
     };
 
-    createFolderApi({ data: bodyParam }).then(() => {
-      toast.success('file created');
-      onSubmit?.();
-    });
+    createFolderApi({ data: bodyParam })
+      .then(() => {
+        toast.success('folder created');
+        onSubmit?.();
+        onClose();
+      })
+      .catch(() => undefined)
+      .finally(() => setIsLoading(false));
   };
 
   return (
-    <Dialog title='folder name' open={isOpen} maxWidth='md' fullWidth onClose={onClose}>
-      <div className={classes.app_bar}>
-        <Typography>folder name</Typography>
-        <IconButton id='dialog-close-icon' onClick={onClose} size='small'>
-          <Close />
-        </IconButton>
-      </div>
-      <form onSubmit={handleSubmit}>
-        <div className={classes.content}>
-          <TextField
-            fullWidth
-            label='enter your folder name'
-            value={folderName}
-            onChange={handleChangeFolderName}
-          />
-        </div>
-        <div className={classes.submit_button_container}>
-          <Button fullWidth variant='contained' type='submit'>
-            <Typography variant='button' color='white'>
-              Create
-            </Typography>
-          </Button>
-        </div>
-      </form>
-    </Dialog>
+    <Modal
+      title='folder name'
+      open={isOpen}
+      maxWidth='md'
+      fullWidth
+      onClose={onClose}
+      onSubmit={handleSubmit}
+      submitButtonText='Create'
+      isLoading={isLoading}
+    >
+      <TextField
+        fullWidth
+        label='enter your folder name'
+        value={folderName}
+        onChange={handleChangeFolderName}
+      />
+    </Modal>
   );
 };

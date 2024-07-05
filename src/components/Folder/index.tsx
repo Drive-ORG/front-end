@@ -1,35 +1,55 @@
 'use client';
 
 import { Delete, FolderTwoTone } from '@mui/icons-material';
-import { Button, IconButton, Typography } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
+import { IconButton, Typography } from '@mui/material';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { toast } from 'react-toastify';
+
+import { deleteFolderApi } from '@/api/methods';
+import { websiteUrls } from '@/constants/urls';
 
 import { FolderProps } from './models';
 
-export const Folder = ({ name, id }: FolderProps) => {
+export const Folder = ({ folderInfo, onRemove }: FolderProps) => {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleDeleteFolder = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setIsLoading(true);
     event.stopPropagation();
+    deleteFolderApi({ folderId: folderInfo.id })
+      .then(() => {
+        toast.success('file removed');
+        onRemove?.();
+      })
+      .catch(() => {
+        setIsLoading(false);
+      });
   };
 
-  const handleOpenFile = () => {};
+  const handleOpenFolder = () => {
+    router.push(`${websiteUrls.files}/${folderInfo.id}`);
+  };
 
   return (
-    <>
-      <Button
-        variant='contained'
-        color='secondary'
-        startIcon={<FolderTwoTone color='primary' />}
-        onDoubleClick={handleOpenFile}
-        endIcon={
-          <IconButton color='primary' onClick={handleDeleteFolder}>
-            <Delete />
-          </IconButton>
-        }
-        size='medium'
-      >
-        <Typography variant='button' color='black'>
-          {name}
-        </Typography>
-      </Button>
-    </>
+    <LoadingButton
+      loading={isLoading}
+      variant='contained'
+      color='secondary'
+      startIcon={<FolderTwoTone color='primary' />}
+      onDoubleClick={handleOpenFolder}
+      endIcon={
+        <IconButton color='primary' onClick={handleDeleteFolder}>
+          <Delete />
+        </IconButton>
+      }
+      size='medium'
+    >
+      <Typography variant='button' color='black'>
+        {folderInfo.name}
+      </Typography>
+    </LoadingButton>
   );
 };

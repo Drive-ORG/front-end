@@ -1,4 +1,4 @@
-import { Button, Grid, Hidden, Typography } from '@mui/material';
+import { Button, Grid, Typography } from '@mui/material';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
@@ -16,30 +16,28 @@ export const Header = () => {
         {/* <Logo /> */}
       </Grid>
       <Grid item xl={5} lg={5} md={5} sm={2}></Grid>
-      <Hidden mdDown>
-        <Grid item>
-          <Grid container spacing={2}>
-            <Grid item>
-              <Button variant='outlined'>
-                <Link href={websiteUrls.register}>
-                  <Typography color='white' variant='button'>
-                    Register
-                  </Typography>
-                </Link>
-              </Button>
-            </Grid>
-            <Grid item>
-              <Button variant='contained'>
-                <Link href={websiteUrls.login}>
-                  <Typography color='white' variant='button'>
-                    Sign in
-                  </Typography>
-                </Link>
-              </Button>
-            </Grid>
+      <Grid item sx={{ display: { md: 'block', xs: 'none' } }}>
+        <Grid container spacing={2}>
+          <Grid item>
+            <Button variant='outlined'>
+              <Link href={websiteUrls.register}>
+                <Typography color='white' variant='button'>
+                  Register
+                </Typography>
+              </Link>
+            </Button>
+          </Grid>
+          <Grid item>
+            <Button variant='contained'>
+              <Link href={websiteUrls.login}>
+                <Typography color='white' variant='button'>
+                  Sign in
+                </Typography>
+              </Link>
+            </Button>
           </Grid>
         </Grid>
-      </Hidden>
+      </Grid>
     </Grid>
   );
 };

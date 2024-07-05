@@ -1,4 +1,6 @@
+import { FileType } from '@/api/methods/models';
+
 export interface FileProps {
-  name: string;
-  id: number;
+  fileInfo: FileType;
+  onRemove?: () => void;
 }

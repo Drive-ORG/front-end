@@ -2,12 +2,25 @@
 
 import { Button, Card, CardContent, Grid, Typography } from '@mui/material';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 import { websiteUrls } from '@/constants/urls';
 
 import classes from './index.module.scss';
 
 const HomePage = () => {
+  const router = useRouter();
+
+  useEffect(() => {
+    const userData = localStorage.getItem('userData');
+    if (userData) {
+      const parsedUserData = JSON.parse(userData);
+      router.replace(`${websiteUrls.files}/${parsedUserData.folder_id}`);
+      router.replace(`${websiteUrls.files}/`);
+    }
+  }, []);
+
   return (
     <Card className={classes.root}>
       <CardContent>

@@ -14,5 +14,13 @@ export const apiUrls = {
   getFolders: {
     method: 'GET',
     url: 'folders/{{folderId}}'
+  },
+  deleteFolder: {
+    method: 'DELETE',
+    url: 'folders/{{folderId}}'
+  },
+  uploadFile: {
+    method: 'POST',
+    url: 'folders/{{folderId}}/files'
   }
 } as const;

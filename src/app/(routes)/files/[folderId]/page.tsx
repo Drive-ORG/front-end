@@ -1,36 +1,56 @@
 'use client';
 
-import { CreateNewFolder, FileUpload } from '@mui/icons-material';
-import { Button, Divider, Grid, Typography } from '@mui/material';
-import { useParams } from 'next/navigation';
+import { ArrowBack, CreateNewFolder, FileUpload } from '@mui/icons-material';
+import { Button, Divider, Grid, IconButton, Typography } from '@mui/material';
+import { useParams, useRouter } from 'next/navigation';
 import { ChangeEvent, useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
-import { getFoldersApi } from '@/api/methods';
+import { getFoldersApi, uploadFileApi } from '@/api/methods';
+import { GetFoldersApiResponse } from '@/api/methods/models';
 import { File } from '@/components/File';
 import { Folder } from '@/components/Folder';
 import { FolderNameModal } from '@/components/FolderNameModal';
 import FullPageLoading from '@/components/FullPageLoading';
+import { websiteUrls } from '@/constants/urls';
 
 import classes from './index.module.scss';
 
 const Files = () => {
   const params = useParams();
+  const router = useRouter();
   const [isOpenFolderNameModal, setIsOpenFolderNameModal] = useState(false);
-  const [folders, setFolders] = useState<string[]>([]);
-  const [files, setFiles] = useState<string[]>([]);
+  const [folderInfo, setFolderInfo] = useState<GetFoldersApiResponse>();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    getFoldersApi({ folderId: Number(params.folderId) })
-      .then((response) => {
-        setFolders(response.data.subFolders);
-        setFiles(response.data.files);
-      })
-      .catch(() => undefined)
-      .finally(() => {
-        setIsLoading(false);
-      });
+    getFolderInfo();
   }, []);
+
+  const getFolderInfo = () => {
+    setIsLoading(true);
+    const numberFolderId = Number(params.folderId);
+
+    if (numberFolderId) {
+      getFoldersApi({ folderId: Number(params.folderId) })
+        .then((response) => {
+          setFolderInfo(response.data);
+        })
+        .catch(() => undefined)
+        .finally(() => {
+          setIsLoading(false);
+        });
+    } else {
+      const userData = localStorage.getItem('userData');
+      if (userData) {
+        const parsedUserData = JSON.parse(userData);
+        router.replace(`${websiteUrls.files}/${parsedUserData.folder_id}`);
+      } else {
+        toast.error('please login first');
+        router.replace(websiteUrls.login);
+      }
+    }
+  };
 
   const handleCloseFolderNameModal = () => {
     setIsOpenFolderNameModal(false);
@@ -40,18 +60,31 @@ const Files = () => {
     setIsOpenFolderNameModal(true);
   };
 
+  const handleBack = () => {
+    router.push(`${websiteUrls.files}/${folderInfo?.parent_folder}`);
+  };
+
   const handleAddFile = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      const reader = new FileReader();
+      setIsLoading(true);
+      uploadFileApi({ data: { file }, folderId: Number(params.folderId) })
+        .then(() => {
+          toast.success('file uploaded successfully');
+          getFolderInfo();
+        })
+        .catch(() => undefined);
+      // if (file) {
+      //   const reader = new FileReader();
 
-      if (reader) {
-        reader.onloadend = () => {
-          // setImageUrl(reader.result);
-        };
+      //   if (reader) {
+      //     reader.onloadend = () => {
+      //       // setImageUrl(reader.result);
+      //     };
 
-        reader.readAsDataURL(file);
-      }
+      //     reader.readAsDataURL(file);
+      //   }
+      // }
     }
   };
 
@@ -61,44 +94,63 @@ const Files = () => {
 
   return (
     <>
-      <Grid container spacing={4} justifyContent='flex-end'>
+      <Grid container justifyContent='space-between'>
         <Grid item>
-          <Button
-            startIcon={<CreateNewFolder />}
-            onClick={handleOpenFolderNameModal}
-            variant='outlined'
-          >
-            <Typography variant='button'>Add new folder</Typography>
-          </Button>
+          <IconButton onClick={handleBack}>
+            <ArrowBack />
+          </IconButton>
         </Grid>
         <Grid item>
-          <label htmlFor='upload-image'>
-            <Button startIcon={<FileUpload />} component='span' variant='outlined'>
-              <Typography variant='button'>Add new file</Typography>
-            </Button>
-            <input id='upload-image' hidden accept='image/*' type='file' onChange={handleAddFile} />
-          </label>
+          <Grid container spacing={4} justifyContent='flex-end'>
+            <Grid item>
+              <Button
+                startIcon={<CreateNewFolder />}
+                onClick={handleOpenFolderNameModal}
+                variant='outlined'
+              >
+                <Typography variant='button'>Add new folder</Typography>
+              </Button>
+            </Grid>
+            <Grid item>
+              <label htmlFor='upload-image'>
+                <Button startIcon={<FileUpload />} component='span' variant='outlined'>
+                  <Typography variant='button'>Add new file</Typography>
+                </Button>
+                <input
+                  id='upload-image'
+                  hidden
+                  accept='.txt, .docx, .pdf, .mp4, .mkv, .png, .jpg'
+                  type='file'
+                  onChange={handleAddFile}
+                />
+              </label>
+            </Grid>
+          </Grid>
         </Grid>
       </Grid>
       <Divider className={classes.divider} />
       <Typography variant='h5'>Folders</Typography>
       <Grid container spacing={4} className={classes.folders_container}>
-        {folders.map((folder) => (
-          <Grid key={folder} item xl={2}>
-            <Folder name='' id={0} />
+        {folderInfo?.subfolders.map((folder) => (
+          <Grid key={folder.id} item xl={2}>
+            <Folder folderInfo={folder} onRemove={getFolderInfo} />
           </Grid>
         ))}
       </Grid>
       <Divider className={classes.divider} />
       <Typography variant='h5'>Files</Typography>
       <Grid container spacing={4} className={classes.folders_container}>
-        {files.map((file) => (
-          <Grid key={file} item xl={2}>
-            <File name='' id={0} />
+        {folderInfo?.files.map((file) => (
+          <Grid key={file.id} item xl={2}>
+            <File fileInfo={file} onRemove={getFolderInfo} />
           </Grid>
         ))}
       </Grid>
-      <FolderNameModal isOpen={isOpenFolderNameModal} onClose={handleCloseFolderNameModal} />
+      <FolderNameModal
+        isOpen={isOpenFolderNameModal}
+        onClose={handleCloseFolderNameModal}
+        onSubmit={getFolderInfo}
+      />
     </>
   );
 };

@@ -1,5 +1,5 @@
 export const websiteUrls = {
-  filesRoot: '/files/0',
+  files: '/files',
   home: '/',
   login: '/sign-in',
   register: '/register'

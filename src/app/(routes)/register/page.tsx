@@ -1,15 +1,18 @@
 'use client';
 
 import { Button, Card, CardContent, Grid, TextField, Typography } from '@mui/material';
+import { useRouter } from 'next/navigation';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { toast } from 'react-toastify';
 
 import { registerApi } from '@/api/methods';
 import { RegisterApiData } from '@/api/methods/models';
+import { websiteUrls } from '@/constants/urls';
 
 import classes from './index.module.scss';
 
 const Register = () => {
+  const router = useRouter();
   const [registerData, setRegisterData] = useState<RegisterApiData>({
     email: '',
     password: '',
@@ -22,6 +25,7 @@ const Register = () => {
     registerApi({ data: registerData })
       .then(() => {
         toast.success('registered successfully');
+        router.push(websiteUrls.login);
       })
       .catch(() => undefined);
   };

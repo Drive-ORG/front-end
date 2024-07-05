@@ -1,5 +1,6 @@
 import { AxiosResponse } from 'axios';
 
+import { convertObjectToFormData } from '@/utils/convertObjectToFormData';
 import { formatStringByKey } from '@/utils/formatStringByKey';
 
 import { api } from '..';
@@ -10,7 +11,8 @@ import {
   GetFoldersApiResponse,
   LoginApiData,
   LoginApiResponse,
-  RegisterApiData
+  RegisterApiData,
+  UploadFileApiData
 } from './models';
 
 export const loginApi = ({
@@ -43,4 +45,25 @@ export const getFoldersApi = ({
 }): Promise<AxiosResponse<GetFoldersApiResponse>> => {
   const { method, url } = apiUrls.getFolders;
   return api({ method, url: formatStringByKey(url, { folderId }) });
+};
+
+export const deleteFolderApi = ({
+  folderId
+}: {
+  folderId: number;
+}): Promise<AxiosResponse<GetFoldersApiResponse>> => {
+  const { method, url } = apiUrls.deleteFolder;
+  return api({ method, url: formatStringByKey(url, { folderId }) });
+};
+
+export const uploadFileApi = ({
+  folderId,
+  data
+}: {
+  folderId: number;
+  data: UploadFileApiData;
+}): Promise<AxiosResponse<GetFoldersApiResponse>> => {
+  const { method, url } = apiUrls.uploadFile;
+  const formData = convertObjectToFormData(data);
+  return api({ data: formData, method, url: formatStringByKey(url, { folderId }) });
 };

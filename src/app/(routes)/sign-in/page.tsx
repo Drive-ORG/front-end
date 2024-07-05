@@ -22,7 +22,7 @@ const SignIn = () => {
     loginApi({ data: loginData }).then((response) => {
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('userData', JSON.stringify(response.data.user));
-      router.push(websiteUrls.filesRoot);
+      router.push(websiteUrls.files);
     });
   };
 
