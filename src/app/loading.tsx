@@ -1,13 +1,7 @@
-import { CircularProgress } from '@mui/material';
-
-import classes from './loading.module.scss';
+import FullPageLoading from '@/components/FullPageLoading';
 
 const Loading = () => {
-  return (
-    <div className={classes.loading_container}>
-      <CircularProgress size={72} />
-    </div>
-  );
+  return <FullPageLoading />;
 };
 
 export default Loading;

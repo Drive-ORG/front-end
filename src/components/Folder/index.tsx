@@ -3,7 +3,9 @@
 import { Delete, FolderTwoTone } from '@mui/icons-material';
 import { Button, IconButton, Typography } from '@mui/material';
 
-export const Folder = () => {
+import { FolderProps } from './models';
+
+export const Folder = ({ name, id }: FolderProps) => {
   const handleDeleteFolder = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
   };
@@ -25,7 +27,7 @@ export const Folder = () => {
         size='medium'
       >
         <Typography variant='button' color='black'>
-          Folder Name
+          {name}
         </Typography>
       </Button>
     </>

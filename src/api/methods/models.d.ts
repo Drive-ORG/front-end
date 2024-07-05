@@ -22,3 +22,19 @@ export interface RegisterApiData {
   password: string;
   password2: string;
 }
+
+export interface CreateFolderApiData {
+  name: string;
+  parent_folder?: number;
+}
+
+export interface CreateFolderApiResponse {
+  id: number;
+  name: string;
+  owner: number;
+  parent_folder: number;
+  subFolders: string[];
+  files: string[];
+}
+
+export type GetFoldersApiResponse = CreateFolderApiResponse;

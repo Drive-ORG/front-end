@@ -3,16 +3,41 @@
 import { CreateNewFolder, FileUpload } from '@mui/icons-material';
 import { Button, Divider, Grid, Typography } from '@mui/material';
 import { useParams } from 'next/navigation';
-import { ChangeEvent } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 
+import { getFoldersApi } from '@/api/methods';
 import { Folder } from '@/components/Folder';
+import { FolderNameModal } from '@/components/FolderNameModal';
+import FullPageLoading from '@/components/FullPageLoading';
 
 import classes from './index.module.scss';
 
 const Files = () => {
   const params = useParams();
+  const [isOpenFolderNameModal, setIsOpenFolderNameModal] = useState(false);
+  const [folders, setFolders] = useState<string[]>([]);
+  const [files, setFiles] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const handleAddFolder = () => {};
+  useEffect(() => {
+    getFoldersApi({ folderId: Number(params.folderId) })
+      .then((response) => {
+        setFolders(response.data.subFolders);
+        setFiles(response.data.files);
+      })
+      .catch(() => undefined)
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, []);
+
+  const handleCloseFolderNameModal = () => {
+    setIsOpenFolderNameModal(false);
+  };
+
+  const handleOpenFolderNameModal = () => {
+    setIsOpenFolderNameModal(true);
+  };
 
   const handleAddFile = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -29,11 +54,19 @@ const Files = () => {
     }
   };
 
+  if (isLoading) {
+    return <FullPageLoading />;
+  }
+
   return (
     <>
       <Grid container spacing={4} justifyContent='flex-end'>
         <Grid item>
-          <Button startIcon={<CreateNewFolder />} onClick={handleAddFolder} variant='outlined'>
+          <Button
+            startIcon={<CreateNewFolder />}
+            onClick={handleOpenFolderNameModal}
+            variant='outlined'
+          >
             <Typography variant='button'>Add new folder</Typography>
           </Button>
         </Grid>
@@ -48,11 +81,14 @@ const Files = () => {
       </Grid>
       <Divider className={classes.divider} />
       <Typography variant='h5'>Folders</Typography>
-      <Grid container spacing={4} className={classes.foldersContainer}>
-        <Grid item xl={2}>
-          <Folder />
-        </Grid>
+      <Grid container spacing={4} className={classes.folders_container}>
+        {folders.map((folder) => (
+          <Grid key={folder} item xl={2}>
+            <Folder name='' id={0} />
+          </Grid>
+        ))}
       </Grid>
+      <FolderNameModal isOpen={isOpenFolderNameModal} onClose={handleCloseFolderNameModal} />
     </>
   );
 };

@@ -21,7 +21,7 @@ const Register = () => {
     event.preventDefault();
     registerApi({ data: registerData })
       .then(() => {
-        toast.success('ثبت نام شما با موفقیت انجام شد');
+        toast.success('registered successfully');
       })
       .catch(() => undefined);
   };
