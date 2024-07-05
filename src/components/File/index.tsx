@@ -1,6 +1,7 @@
 import { Delete } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
 import { IconButton, Typography } from '@mui/material';
+import Link from 'next/link';
 import { useState } from 'react';
 
 import { ExtensionIcon } from '@/components/ExtensionIcon';
@@ -20,6 +21,11 @@ export const File = ({ fileInfo, onRemove }: FileProps) => {
     setIsOpenFilePreviewModal(false);
   };
 
+  const handleDownloadFile = () => {
+    const downloadFileLink = document.getElementById('download-file');
+    downloadFileLink?.click();
+  };
+
   const handleDeleteFile = (event: React.MouseEvent<HTMLButtonElement>) => {
     setIsLoading(true);
     event.stopPropagation();
@@ -36,11 +42,14 @@ export const File = ({ fileInfo, onRemove }: FileProps) => {
   const handleOpenFile = () => {
     if (['png', 'jpg', 'pdf'].includes(fileInfo.type)) {
       handleOpenFilePreviewModal();
+    } else {
+      handleDownloadFile();
     }
   };
 
   return (
     <>
+      <Link href={fileInfo.file} target='_blank' download id='download-file' />
       <LoadingButton
         loading={isLoading}
         variant='contained'
@@ -58,7 +67,11 @@ export const File = ({ fileInfo, onRemove }: FileProps) => {
           {fileInfo.name}
         </Typography>
       </LoadingButton>
-      <FilePreviewModal isOpen={isOpenFilePreviewModal} onClose={handleCloseFilePreviewModal} />
+      <FilePreviewModal
+        isOpen={isOpenFilePreviewModal}
+        onClose={handleCloseFilePreviewModal}
+        fileInfo={fileInfo}
+      />
     </>
   );
 };

@@ -23,21 +23,23 @@ export const Modal = ({
           <Close />
         </IconButton>
       </div>
-      <form onSubmit={onSubmit}>
+      <form onSubmit={(event) => onSubmit?.(event)}>
         <div className={classes.content}>{children}</div>
-        <div className={classes.submit_button_container}>
-          <LoadingButton
-            fullWidth
-            loading={isLoading}
-            variant='contained'
-            type='submit'
-            {...submitButtonProps}
-          >
-            <Typography variant='button' color='white'>
-              {submitButtonText}
-            </Typography>
-          </LoadingButton>
-        </div>
+        {onSubmit && (
+          <div className={classes.submit_button_container}>
+            <LoadingButton
+              fullWidth
+              loading={isLoading}
+              variant='contained'
+              type='submit'
+              {...submitButtonProps}
+            >
+              <Typography variant='button' color='white'>
+                {submitButtonText}
+              </Typography>
+            </LoadingButton>
+          </div>
+        )}
       </form>
     </MuiDialog>
   );
