@@ -17,7 +17,6 @@ const HomePage = () => {
     if (userData) {
       const parsedUserData = JSON.parse(userData);
       router.replace(`${websiteUrls.files}/${parsedUserData.folder_id}`);
-      router.replace(`${websiteUrls.files}/`);
     }
   }, []);
 

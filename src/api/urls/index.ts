@@ -22,5 +22,13 @@ export const apiUrls = {
   uploadFile: {
     method: 'POST',
     url: 'folders/{{folderId}}/files'
+  },
+  deleteFile: {
+    method: 'DELETE',
+    url: 'files/{{fileId}}'
+  },
+  getUserInfo: {
+    method: 'GET',
+    url: 'current-user'
   }
 } as const;

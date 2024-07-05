@@ -5,14 +5,13 @@ import { LoadingButton } from '@mui/lab';
 import { IconButton, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { toast } from 'react-toastify';
 
 import { deleteFolderApi } from '@/api/methods';
 import { websiteUrls } from '@/constants/urls';
 
 import { FolderProps } from './models';
 
-export const Folder = ({ folderInfo, onRemove }: FolderProps) => {
+export const Folder = ({ folderInfo }: FolderProps) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -21,8 +20,7 @@ export const Folder = ({ folderInfo, onRemove }: FolderProps) => {
     event.stopPropagation();
     deleteFolderApi({ folderId: folderInfo.id })
       .then(() => {
-        toast.success('file removed');
-        onRemove?.();
+        location.reload();
       })
       .catch(() => {
         setIsLoading(false);

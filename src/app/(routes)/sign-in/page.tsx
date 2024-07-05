@@ -21,7 +21,6 @@ const SignIn = () => {
     event.preventDefault();
     loginApi({ data: loginData }).then((response) => {
       localStorage.setItem('token', response.data.token);
-      localStorage.setItem('userData', JSON.stringify(response.data.user));
       router.push(websiteUrls.files);
     });
   };

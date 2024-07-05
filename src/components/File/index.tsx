@@ -4,12 +4,13 @@ import { IconButton, Typography } from '@mui/material';
 import Link from 'next/link';
 import { useState } from 'react';
 
+import { deleteFileApi } from '@/api/methods';
 import { ExtensionIcon } from '@/components/ExtensionIcon';
 
 import { FilePreviewModal } from '../FilePreviewModal';
 import { FileProps } from './models';
 
-export const File = ({ fileInfo, onRemove }: FileProps) => {
+export const File = ({ fileInfo }: FileProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isOpenFilePreviewModal, setIsOpenFilePreviewModal] = useState(false);
 
@@ -29,14 +30,13 @@ export const File = ({ fileInfo, onRemove }: FileProps) => {
   const handleDeleteFile = (event: React.MouseEvent<HTMLButtonElement>) => {
     setIsLoading(true);
     event.stopPropagation();
-    // deleteFolderApi({ folderId: folderInfo.id })
-    //   .then(() => {
-    //     toast.success('file removed');
-    //     onRemove?.();
-    //   })
-    //   .catch(() => {
-    //     setIsLoading(false);
-    //   });
+    deleteFileApi({ fileId: fileInfo.id })
+      .then(() => {
+        location.reload();
+      })
+      .catch(() => {
+        setIsLoading(false);
+      });
   };
 
   const handleOpenFile = () => {

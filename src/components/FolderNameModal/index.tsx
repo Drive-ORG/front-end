@@ -1,7 +1,6 @@
 import { TextField } from '@mui/material';
 import { useParams } from 'next/navigation';
 import { ChangeEvent, FormEvent, useState } from 'react';
-import { toast } from 'react-toastify';
 
 import { createFolderApi } from '@/api/methods';
 import { CreateFolderApiData } from '@/api/methods/models';
@@ -9,10 +8,11 @@ import { CreateFolderApiData } from '@/api/methods/models';
 import { Modal } from '../Modal';
 import { FolderNameModalProps } from './models';
 
-export const FolderNameModal = ({ isOpen, onClose, onSubmit }: FolderNameModalProps) => {
+export const FolderNameModal = ({ isOpen, onClose }: FolderNameModalProps) => {
+  const params = useParams();
+
   const [folderName, setFolderName] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const params = useParams();
 
   const handleChangeFolderName = (event: ChangeEvent<HTMLInputElement>) => {
     setFolderName(event.target.value);
@@ -29,9 +29,7 @@ export const FolderNameModal = ({ isOpen, onClose, onSubmit }: FolderNameModalPr
 
     createFolderApi({ data: bodyParam })
       .then(() => {
-        toast.success('folder created');
-        onSubmit?.();
-        onClose();
+        location.reload();
       })
       .catch(() => undefined)
       .finally(() => setIsLoading(false));

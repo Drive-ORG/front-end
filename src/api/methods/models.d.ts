@@ -58,3 +58,5 @@ export interface FileType {
 export interface UploadFileApiData {
   file: File;
 }
+
+export type GetUserInfoApiResponse = User;

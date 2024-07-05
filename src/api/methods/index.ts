@@ -9,6 +9,7 @@ import {
   CreateFolderApiData,
   CreateFolderApiResponse,
   GetFoldersApiResponse,
+  GetUserInfoApiResponse,
   LoginApiData,
   LoginApiResponse,
   RegisterApiData,
@@ -66,4 +67,18 @@ export const uploadFileApi = ({
   const { method, url } = apiUrls.uploadFile;
   const formData = convertObjectToFormData(data);
   return api({ data: formData, method, url: formatStringByKey(url, { folderId }) });
+};
+
+export const deleteFileApi = ({
+  fileId
+}: {
+  fileId: number;
+}): Promise<AxiosResponse<GetFoldersApiResponse>> => {
+  const { method, url } = apiUrls.deleteFile;
+  return api({ method, url: formatStringByKey(url, { fileId }) });
+};
+
+export const getUserInfoApi = (): Promise<AxiosResponse<GetUserInfoApiResponse>> => {
+  const { method, url } = apiUrls.getUserInfo;
+  return api({ method, url });
 };
