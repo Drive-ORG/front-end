@@ -14,7 +14,7 @@ export const api = async (options?: AxiosRequestConfig, authenticate = true) => 
     const response = await axiosInstance({
       ...options,
       headers,
-      url: `${process.env.NEXT_PUBLIC_BASE_URL}/api/${options?.url}/`
+      url: `http://95.217.155.226:8000/api/${options?.url}/`
     });
     return response;
   } catch (error: any) {
