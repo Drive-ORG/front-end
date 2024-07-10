@@ -25,8 +25,11 @@ export const userDataSlice = createSlice({
     },
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload;
+    },
+    resetUserData: (state) => {
+      state.data = initialData;
     }
   }
 });
 
-export const { setUserData, setLoading } = userDataSlice.actions;
+export const { setUserData, setLoading, resetUserData } = userDataSlice.actions;
