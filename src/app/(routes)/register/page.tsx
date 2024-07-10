@@ -34,7 +34,7 @@ const Register = () => {
   const handleRegister = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
-    registerApi({ data: registerData })
+    registerApi({ data: { ...registerData, username: registerData.username.toLocaleLowerCase() } })
       .then(() => {
         toast.success('registered successfully');
         router.push(websiteUrls.login);

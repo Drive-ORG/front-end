@@ -34,7 +34,9 @@ const SignIn = () => {
   const handleLogin = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
-    loginApi({ data: loginData })
+    loginApi({
+      data: { username: loginData.username.toLocaleLowerCase(), password: loginData.password }
+    })
       .then((response) => {
         localStorage.setItem('token', response.data.token);
         dispatch(setUserData(response.data.user));
