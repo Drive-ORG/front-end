@@ -1,14 +1,34 @@
 import { AddToDrive } from '@mui/icons-material';
-import { Button, Grid, Typography } from '@mui/material';
+import { Button, Grid, Menu, MenuItem, Typography } from '@mui/material';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 import { websiteUrls } from '@/constants/urls';
-import { useAppSelector } from '@/store';
+import { useAppDispatch, useAppSelector } from '@/store';
+import { resetUserData } from '@/store/slices/userDataSlice';
 
 export const Header = () => {
-  const pathname = usePathname();
   const userData = useAppSelector((state) => state.userData);
+  const dispatch = useAppDispatch();
+
+  const pathname = usePathname();
+  const router = useRouter();
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    dispatch(resetUserData());
+    router.push(websiteUrls.login);
+  };
 
   if (['/sign-in', '/register'].includes(pathname) || userData.isLoading) {
     return <></>;
@@ -24,7 +44,24 @@ export const Header = () => {
       <Grid item xl={5} lg={5} md={5} sm={2}></Grid>
       {userData.data.id ? (
         <Grid item>
-          <Typography variant='h6'>{userData.data.username}</Typography>
+          <Button variant='text' onClick={handleClick}>
+            <Typography variant='button'>{userData.data.username}</Typography>
+          </Button>
+          <Menu
+            id='basic-menu'
+            anchorEl={anchorEl}
+            anchorOrigin={{
+              horizontal: 'center',
+              vertical: 'bottom'
+            }}
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+            MenuListProps={{
+              'aria-labelledby': 'basic-button'
+            }}
+          >
+            <MenuItem onClick={handleLogout}>Logout</MenuItem>
+          </Menu>
         </Grid>
       ) : (
         <>
